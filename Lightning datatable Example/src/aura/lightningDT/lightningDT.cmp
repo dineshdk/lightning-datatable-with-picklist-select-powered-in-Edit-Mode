@@ -1,0 +1,74 @@
+<aura:component controller="DTAuraController" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:appHostable">
+    
+    <!--Declare Attributes-->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="recId" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="picklistOpts" type="string[]" description=""/>
+    <aura:attribute name="list" type="Contact" description=""/>
+    <aura:attribute name="objInfoForPicklistValues" type="contact" default="{sobjectType : 'contact'}" description="object info to get picklist"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="forDml" type="Contact" description=""/>
+    <aura:attribute name="validatePL" type="String"/>
+    <aura:attribute name="emailtype" type="String"/>
+    <aura:attribute name="conMap" type="Map"  default="{}" />
+     <aura:attribute name="isProcessing" type="Boolean" default="false" />
+
+    <!--Component Start-->
+    <lightning:card title="Manage Contacts">
+        <lightning:datatable columns="{!v.columns}"
+                             data="{!v.data}"
+                             keyField="Id"
+                             showRowNumberColumn="true"
+                             hideCheckboxColumn="true"
+                             onrowaction="{!c.handleRowAction}"
+                             enableInfiniteLoading="true"
+                             />
+        
+    </lightning:card>
+    <div role="dialog" tabindex="-1" aura:id="editDialog" class="slds-modal" data-action-type="" data-modal="editDialog">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 id="header" class="slds-text-heading--medium">Edit Contact</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium" aura:id="recordFieldContainer">                                  
+                
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">     
+                        
+                        <lightning:input name="FirstName" value="{!v.list.FirstName}"
+                                         label="FirstName"  readonly="true" />
+                        
+                        <lightning:input name="LastName" value="{!v.list.LastName}"
+                                         label="LastName" readonly="true" />
+                        
+                        <lightning:input name="Phone" value="{!v.list.MobilePhone}"
+                                         label="Phone" readonly="true"  />
+                        
+                        <ui:inputSelect  aura:id="pl" value="{!v.list.Email_Type__c}" change="{!c.onPicklistChange}" updateOn="change" label="Email Type" required="{!v.flag}" >
+                            <aura:iteration items="{!v.picklistOpts}" var="source">
+                                <ui:inputSelectOption text="{!source}" label="{!source}" aura:id="pll" />
+                            </aura:iteration>
+                        </ui:inputSelect>
+                        
+                        <ui:inputText aura:id="Email" value="{!(v.list.Email)}"
+                                      label="Email" />
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class="slds-modal__footer">
+                <lightning:button label="Cancelar" name="editDialog" onclick="{!c.closeEditModal}" />
+                <lightning:button variant="brand" label="Save" name="confirmEditRecord" onclick="{!c.saveEditModal}" />                                
+            </div>
+        </div>
+    </div>       
+    <div class="slds-backdrop " aura:id="dialogBack"></div>   
+    
+        <lightning:spinner variant="brand" size="medium"  alternativeText="Loading" class="{!((v.isProcessing)? '': 'slds-hide')}"/>
+
+    <!--Component End-->
+</aura:component>
