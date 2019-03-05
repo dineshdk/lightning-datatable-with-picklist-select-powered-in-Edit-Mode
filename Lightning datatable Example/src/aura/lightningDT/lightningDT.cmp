@@ -61,7 +61,7 @@
                 
             </div>
             <div class="slds-modal__footer">
-                <lightning:button label="Cancelar" name="editDialog" onclick="{!c.closeEditModal}" />
+                <lightning:button label="Cancel" name="editDialog" onclick="{!c.closeEditModal}" />
                 <lightning:button variant="brand" label="Save" name="confirmEditRecord" onclick="{!c.saveEditModal}" />                                
             </div>
         </div>
