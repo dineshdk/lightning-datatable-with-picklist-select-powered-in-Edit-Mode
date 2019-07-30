@@ -47,7 +47,7 @@
                         <lightning:input name="Phone" value="{!v.list.MobilePhone}"
                                          label="Phone" readonly="true"  />
                         
-                        <ui:inputSelect  aura:id="pl" value="{!v.list.Email_Type__c}" change="{!c.onPicklistChange}" updateOn="change" label="Email Type" required="{!v.flag}" >
+                        <ui:inputSelect  aura:id="pl" value="{!v.list.Email_Type__c}" updateOn="change" label="Email Type" required="{!v.flag}" >
                             <aura:iteration items="{!v.picklistOpts}" var="source">
                                 <ui:inputSelectOption text="{!source}" label="{!source}" aura:id="pll" />
                             </aura:iteration>
